@@ -13,6 +13,7 @@
   <input type="file" name="teste" id="upload-csv">
   <button id="btn-upload-csv">Carregar dados do Questionário</button>
   <hr>
+  <div id="botoes" style="display: none;">
   <button onclick="gerarGrafico('cursos');">2 - Qual o seu curso?</button>
   <button onclick="gerarGrafico('periodos');">3 - Qual o período em que cursa?</button>
   <button onclick="gerarGrafico('estados');">4 - Qual o estado do Brasil em que você nasceu?</button>
@@ -128,6 +129,7 @@
     faculdade?</button>
   <button onclick="exibirListaResposta()">41 - Escreva em algumas linhas sobre sua história e seus sonhos de
     vida</button>
+  </div>
 
   <div id="container" style="display:none;min-width: 310px; height: 400px; margin: 0 auto"></div>
   <div id="div_respostas" style="display:none">
@@ -290,6 +292,8 @@
       let curso_tecnico = [];
       let meio_transporte = [];
       let historia = [];
+      let hoje = new Date();
+      let anoAtual = hoje.getFullYear();
       Papa.parse(document.getElementById('upload-csv').files[0], {
         download: true,
         header: true,
@@ -303,10 +307,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              cursos.push({ resposta: resp, qtde: 1 });
+              cursos.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = cursos.findIndex((item) => item.resposta === resp);
-              cursos[index].qtde += 1;
+              cursos[index].quantidade += 1;
             }
           }
           resp = row["3 - Qual o período em que cursa?"];
@@ -315,10 +319,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              periodos.push({ resposta: resp, qtde: 1 });
+              periodos.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = periodos.findIndex((item) => item.resposta === resp);
-              periodos[index].qtde += 1;
+              periodos[index].quantidade += 1;
             }
           }
           resp = row["4 - Qual o estado do Brasil em que você nasceu?"];
@@ -327,10 +331,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              estados.push({ resposta: resp, qtde: 1 });
+              estados.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = estados.findIndex((item) => item.resposta === resp);
-              estados[index].qtde += 1;
+              estados[index].quantidade += 1;
             }
           }
           resp = row["6 - Qual o seu gênero?"];
@@ -339,35 +343,36 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              generos.push({ resposta: resp, qtde: 1 });
+              generos.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = generos.findIndex((item) => item.resposta === resp);
-              generos[index].qtde += 1;
+              generos[index].quantidade += 1;
             }
           }
           resp = row["7 - Qual a sua data de nascimento?"];
+          var idade = anoAtual - resp.slice(0, 4);
           var found = idades.some((elemento) => {
-            return elemento.resposta === resp;
+            return elemento.resposta === idade;
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              idades.push({ resposta: resp, qtde: 1 });
+              idades.push({ resposta: idade, quantidade: 1 });
             } else {
-              const index = idades.findIndex((item) => item.resposta === resp);
-              idades[index].qtde += 1;
+              const index = idades.findIndex((item) => item.resposta === idade);
+              idades[index].quantidade += 1;
             }
           }
-
+          
           resp = row["5 - Qual a sua cidade de residência?"];
           var found = cidades.some((elemento) => {
             return elemento.resposta === resp;
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              cidades.push({ resposta: resp, qtde: 1 });
+              cidades.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = cidades.findIndex((item) => item.resposta === resp);
-              cidades[index].qtde += 1;
+              cidades[index].quantidade += 1;
             }
           }
           resp = row["8 - Qual é o seu estado civil?"];
@@ -376,10 +381,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              estado_civil.push({ resposta: resp, qtde: 1 });
+              estado_civil.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = estado_civil.findIndex((item) => item.resposta === resp);
-              estado_civil[index].qtde += 1;
+              estado_civil[index].quantidade += 1;
             }
           }
           resp = row["9 - Você é portador de alguma necessidade especial?"];
@@ -388,10 +393,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              necessidade_especial.push({ resposta: resp, qtde: 1 });
+              necessidade_especial.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = necessidade_especial.findIndex((item) => item.resposta === resp);
-              necessidade_especial[index].qtde += 1;
+              necessidade_especial[index].quantidade += 1;
             }
           }
           resp = row["10 - Quantos filhos você têm?"];
@@ -400,10 +405,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_filhos.push({ resposta: resp, qtde: 1 });
+              qtde_filhos.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = qtde_filhos.findIndex((item) => item.resposta === resp);
-              qtde_filhos[index].qtde += 1;
+              qtde_filhos[index].quantidade += 1;
             }
           }
           resp = row["11 - Com quem você mora atualmente?"];
@@ -412,10 +417,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              com_quem_mora.push({ resposta: resp, qtde: 1 });
+              com_quem_mora.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = com_quem_mora.findIndex((item) => item.resposta === resp);
-              com_quem_mora[index].qtde += 1;
+              com_quem_mora[index].quantidade += 1;
             }
           }
           resp = row["12- Quantas pessoas, incluindo você, moram no seu domicílio?"];
@@ -424,10 +429,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_pessoas_casa.push({ resposta: resp, qtde: 1 });
+              qtde_pessoas_casa.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = qtde_pessoas_casa.findIndex((item) => item.resposta === resp);
-              qtde_pessoas_casa[index].qtde += 1;
+              qtde_pessoas_casa[index].quantidade += 1;
             }
           }
           resp = row["13 - Qual a situação do domicílio onde mora?"];
@@ -436,10 +441,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              situacao_casa.push({ resposta: resp, qtde: 1 });
+              situacao_casa.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = situacao_casa.findIndex((item) => item.resposta === resp);
-              situacao_casa[index].qtde += 1;
+              situacao_casa[index].quantidade += 1;
             }
           }
           resp = row["14 - Há quanto tempo você mora neste domicílio?"];
@@ -448,10 +453,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              tempo_casa.push({ resposta: resp, qtde: 1 });
+              tempo_casa.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = tempo_casa.findIndex((item) => item.resposta === resp);
-              tempo_casa[index].qtde += 1;
+              tempo_casa[index].quantidade += 1;
             }
           }
           resp = row["15 - Qual a faixa de renda mensal da sua família (em Salários Mínimos)?"];
@@ -460,10 +465,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              renda_familiar.push({ resposta: resp, qtde: 1 });
+              renda_familiar.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = renda_familiar.findIndex((item) => item.resposta === resp);
-              renda_familiar[index].qtde += 1;
+              renda_familiar[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Televisores]"];
@@ -472,10 +477,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_itens_tv.push({ resposta: "'" + resp + "'", qtde: 1 });
+              qtde_itens_tv.push({ resposta: "'" + resp + "'", quantidade: 1 });
             } else {
               const index = qtde_itens_tv.findIndex((item) => item.resposta ===  "'" + resp + "'");
-              qtde_itens_tv[index].qtde += 1;
+              qtde_itens_tv[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Video cassete e/ou DVD]"];
@@ -484,10 +489,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_itens_dvd.push({ resposta: resp, qtde: 1 });
+              qtde_itens_dvd.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = qtde_itens_dvd.findIndex((item) => item.resposta === resp);
-              qtde_itens_dvd[index].qtde += 1;
+              qtde_itens_dvd[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Rádio]"];
@@ -496,10 +501,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_itens_radio.push({ resposta: resp, qtde: 1 });
+              qtde_itens_radio.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = qtde_itens_radio.findIndex((item) => item.resposta === resp);
-              qtde_itens_radio[index].qtde += 1;
+              qtde_itens_radio[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Automóveis]"];
@@ -508,10 +513,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_carros.push({ resposta: "'" + resp + "'", qtde: 1 });
+              qtde_carros.push({ resposta: "'" + resp + "'", quantidade: 1 });
             } else {
               const index = qtde_carros.findIndex((item) => item.resposta === "'" + resp + "'");
-              qtde_carros[index].qtde += 1;
+              qtde_carros[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Motocicleta]"];
@@ -520,10 +525,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_motos.push({ resposta: resp, qtde: 1 });
+              qtde_motos.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = qtde_motos.findIndex((item) => item.resposta === resp);
-              qtde_motos[index].qtde += 1;
+              qtde_motos[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Celular comum]"];
@@ -532,10 +537,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_celular.push({ resposta: resp, qtde: 1 });
+              qtde_celular.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = qtde_celular.findIndex((item) => item.resposta === resp);
-              qtde_celular[index].qtde += 1;
+              qtde_celular[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Smartphone]"];
@@ -544,10 +549,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_smartphone.push({ resposta: resp, qtde: 1 });
+              qtde_smartphone.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = qtde_smartphone.findIndex((item) => item.resposta === resp);
-              qtde_smartphone[index].qtde += 1;
+              qtde_smartphone[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Microcomputador de mesa]"];
@@ -556,10 +561,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_pc.push({ resposta: resp, qtde: 1 });
+              qtde_pc.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = qtde_pc.findIndex((item) => item.resposta === resp);
-              qtde_pc[index].qtde += 1;
+              qtde_pc[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Notebook]"];
@@ -568,10 +573,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_notebook.push({ resposta: resp, qtde: 1 });
+              qtde_notebook.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = qtde_notebook.findIndex((item) => item.resposta === resp);
-              qtde_notebook[index].qtde += 1;
+              qtde_notebook[index].quantidade += 1;
             }
           }
           resp = row["17 - Em seu domicílio você possui: [Telefone]"];
@@ -580,10 +585,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_telefone_casa.push({ resposta: resp, qtde: 1 });
+              qtde_telefone_casa.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = qtde_telefone_casa.findIndex((item) => item.resposta === resp);
-              qtde_telefone_casa[index].qtde += 1;
+              qtde_telefone_casa[index].quantidade += 1;
             }
           }
           resp = row["17 - Em seu domicílio você possui: [Internet]"];
@@ -592,10 +597,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              internet_casa.push({ resposta: resp, qtde: 1 });
+              internet_casa.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = internet_casa.findIndex((item) => item.resposta === resp);
-              internet_casa[index].qtde += 1;
+              internet_casa[index].quantidade += 1;
             }
           }
           resp = row["17 - Em seu domicílio você possui: [TV por assinatura]"];
@@ -604,10 +609,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              tv_assinatura_casa.push({ resposta: resp, qtde: 1 });
+              tv_assinatura_casa.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = tv_assinatura_casa.findIndex((item) => item.resposta === resp);
-              tv_assinatura_casa[index].qtde += 1;
+              tv_assinatura_casa[index].quantidade += 1;
             }
           }
           resp = row["17 - Em seu domicílio você possui: [Empregada Mensalista]"];
@@ -616,10 +621,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              empregada_casa.push({ resposta: resp, qtde: 1 });
+              empregada_casa.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = empregada_casa.findIndex((item) => item.resposta === resp);
-              empregada_casa[index].qtde += 1;
+              empregada_casa[index].quantidade += 1;
             }
           }
           resp = row["18.1 - Vamos tratar sobre trabalho agora: [Você trabalha?]"];
@@ -628,10 +633,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              voce_trabalha.push({ resposta: resp, qtde: 1 });
+              voce_trabalha.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = voce_trabalha.findIndex((item) => item.resposta === resp);
-              voce_trabalha[index].qtde += 1;
+              voce_trabalha[index].quantidade += 1;
             }
           }
           resp = row["18.2 - Qual é o seu vinculo com o emprego?"];
@@ -640,10 +645,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              vinculo_emprego.push({ resposta: resp, qtde: 1 });
+              vinculo_emprego.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = vinculo_emprego.findIndex((item) => item.resposta === resp);
-              vinculo_emprego[index].qtde += 1;
+              vinculo_emprego[index].quantidade += 1;
             }
           }
           resp = row["18.3 - Qual a área do seu trabalho?"];
@@ -652,10 +657,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              area_trabalho.push({ resposta: resp, qtde: 1 });
+              area_trabalho.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = area_trabalho.findIndex((item) => item.resposta === resp);
-              area_trabalho[index].qtde += 1;
+              area_trabalho[index].quantidade += 1;
             }
           }
           resp = row["19 - Você tem plano de saúde privado?"];
@@ -664,10 +669,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              plano_saude.push({ resposta: resp, qtde: 1 });
+              plano_saude.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = plano_saude.findIndex((item) => item.resposta === resp);
-              plano_saude[index].qtde += 1;
+              plano_saude[index].quantidade += 1;
             }
           }
           resp = row["20.1 - Vamos considerar a escolaridade da família. Qual a escolaridade da sua mãe?"];
@@ -676,10 +681,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              escolaridade_mae.push({ resposta: resp, qtde: 1 });
+              escolaridade_mae.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = escolaridade_mae.findIndex((item) => item.resposta === resp);
-              escolaridade_mae[index].qtde += 1;
+              escolaridade_mae[index].quantidade += 1;
             }
           }
           resp = row["20.2 - E qual a escolaridade do seu pai?"];
@@ -688,10 +693,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              escolaridade_pai.push({ resposta: resp, qtde: 1 });
+              escolaridade_pai.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = escolaridade_pai.findIndex((item) => item.resposta === resp);
-              escolaridade_pai[index].qtde += 1;
+              escolaridade_pai[index].quantidade += 1;
             }
           }
           resp = row["21 - Na sua vida escolar você estudou?"];
@@ -700,10 +705,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              estudou_onde.push({ resposta: resp, qtde: 1 });
+              estudou_onde.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = estudou_onde.findIndex((item) => item.resposta === resp);
-              estudou_onde[index].qtde += 1;
+              estudou_onde[index].quantidade += 1;
             }
           }
           resp = row["22.1 -  Vamos tratar sobre uso de microcomputadores? [Com que frequência você utiliza microcomputadores ]"];
@@ -712,10 +717,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              frequencia_pc.push({ resposta: resp, qtde: 1 });
+              frequencia_pc.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = frequencia_pc.findIndex((item) => item.resposta === resp);
-              frequencia_pc[index].qtde += 1;
+              frequencia_pc[index].quantidade += 1;
             }
           }
           resp = row["22.2 - Onde você utiliza microcomputadores? [Em casa]"];
@@ -724,10 +729,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              utiliza_casa.push({ resposta: resp, qtde: 1 });
+              utiliza_casa.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = utiliza_casa.findIndex((item) => item.resposta === resp);
-              utiliza_casa[index].qtde += 1;
+              utiliza_casa[index].quantidade += 1;
             }
           }
           resp = row["22.2 - Onde você utiliza microcomputadores? [No trabalho]"];
@@ -736,10 +741,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              utiliza_trabalho.push({ resposta: resp, qtde: 1 });
+              utiliza_trabalho.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = utiliza_trabalho.findIndex((item) => item.resposta === resp);
-              utiliza_trabalho[index].qtde += 1;
+              utiliza_trabalho[index].quantidade += 1;
             }
           }
           resp = row["22.2 - Onde você utiliza microcomputadores? [Na escola]"];
@@ -748,10 +753,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              utiliza_escola.push({ resposta: resp, qtde: 1 });
+              utiliza_escola.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = utiliza_escola.findIndex((item) => item.resposta === resp);
-              utiliza_escola[index].qtde += 1;
+              utiliza_escola[index].quantidade += 1;
             }
           }
           resp = row["22.2 - Onde você utiliza microcomputadores? [Em outros lugares]"];
@@ -760,10 +765,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              utiliza_outros.push({ resposta: resp, qtde: 1 });
+              utiliza_outros.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = utiliza_outros.findIndex((item) => item.resposta === resp);
-              utiliza_outros[index].qtde += 1;
+              utiliza_outros[index].quantidade += 1;
             }
           }
           resp = row["22.3 - Com qual finalidade você utiliza  microcomputadores? [Para trabalhos profissionais]"];
@@ -772,10 +777,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              finalidade_pc_trabalho.push({ resposta: resp, qtde: 1 });
+              finalidade_pc_trabalho.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = finalidade_pc_trabalho.findIndex((item) => item.resposta === resp);
-              finalidade_pc_trabalho[index].qtde += 1;
+              finalidade_pc_trabalho[index].quantidade += 1;
             }
           }
           resp = row["22.3 - Com qual finalidade você utiliza  microcomputadores? [Para trabalhos escolares]"];
@@ -784,10 +789,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              finalidade_pc_escola.push({ resposta: resp, qtde: 1 });
+              finalidade_pc_escola.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = finalidade_pc_escola.findIndex((item) => item.resposta === resp);
-              finalidade_pc_escola[index].qtde += 1;
+              finalidade_pc_escola[index].quantidade += 1;
             }
           }
           resp = row["22.3 - Com qual finalidade você utiliza  microcomputadores? [Para entretenimento]"];
@@ -796,10 +801,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              finalidade_pc_entreterimento.push({ resposta: resp, qtde: 1 });
+              finalidade_pc_entreterimento.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = finalidade_pc_entreterimento.findIndex((item) => item.resposta === resp);
-              finalidade_pc_entreterimento[index].qtde += 1;
+              finalidade_pc_entreterimento[index].quantidade += 1;
             }
           }
           resp = row["22.3 - Com qual finalidade você utiliza  microcomputadores? [Para comunicação por e-mail]"];
@@ -808,10 +813,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              finalidade_pc_email.push({ resposta: resp, qtde: 1 });
+              finalidade_pc_email.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = finalidade_pc_email.findIndex((item) => item.resposta === resp);
-              finalidade_pc_email[index].qtde += 1;
+              finalidade_pc_email[index].quantidade += 1;
             }
           }
           resp = row["22.3 - Com qual finalidade você utiliza  microcomputadores? [Para operações bancárias]"];
@@ -820,10 +825,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              finalidade_pc_banco.push({ resposta: resp, qtde: 1 });
+              finalidade_pc_banco.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = finalidade_pc_banco.findIndex((item) => item.resposta === resp);
-              finalidade_pc_banco[index].qtde += 1;
+              finalidade_pc_banco[index].quantidade += 1;
             }
           }
           resp = row["22.3 - Com qual finalidade você utiliza  microcomputadores? [Para Compras eletrônicas]"];
@@ -832,10 +837,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              finalidade_pc_compras.push({ resposta: resp, qtde: 1 });
+              finalidade_pc_compras.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = finalidade_pc_compras.findIndex((item) => item.resposta === resp);
-              finalidade_pc_compras[index].qtde += 1;
+              finalidade_pc_compras[index].quantidade += 1;
             }
           }
           resp = row["23 - Como você classifica  seu conhecimento em  informática?"];
@@ -844,10 +849,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              conhecimento_informatica.push({ resposta: resp, qtde: 1 });
+              conhecimento_informatica.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = conhecimento_informatica.findIndex((item) => item.resposta === resp);
-              conhecimento_informatica[index].qtde += 1;
+              conhecimento_informatica[index].quantidade += 1;
             }
           }
           resp = row["24 - Qual o seu conhecimento em relações aos aplicativos a seguir?   [Windows]"];
@@ -856,10 +861,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              conhecimento_windows.push({ resposta: resp, qtde: 1 });
+              conhecimento_windows.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = conhecimento_windows.findIndex((item) => item.resposta === resp);
-              conhecimento_windows[index].qtde += 1;
+              conhecimento_windows[index].quantidade += 1;
             }
           }
           resp = row["24 - Qual o seu conhecimento em relações aos aplicativos a seguir?   [Linux]"];
@@ -868,10 +873,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              conhecimento_linux.push({ resposta: resp, qtde: 1 });
+              conhecimento_linux.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = conhecimento_linux.findIndex((item) => item.resposta === resp);
-              conhecimento_linux[index].qtde += 1;
+              conhecimento_linux[index].quantidade += 1;
             }
           }
           resp = row["24 - Qual o seu conhecimento em relações aos aplicativos a seguir?   [Editores de textos (Word, Writer, etc.)]"];
@@ -880,10 +885,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              conhecimento_editor_texto.push({ resposta: resp, qtde: 1 });
+              conhecimento_editor_texto.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = conhecimento_editor_texto.findIndex((item) => item.resposta === resp);
-              conhecimento_editor_texto[index].qtde += 1;
+              conhecimento_editor_texto[index].quantidade += 1;
             }
           }
           resp = row["24 - Qual o seu conhecimento em relações aos aplicativos a seguir?   [ Planilhas eletrônicas (Excel, Calc, etc.)]"];
@@ -892,10 +897,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              conhecimento_planilhas.push({ resposta: resp, qtde: 1 });
+              conhecimento_planilhas.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = conhecimento_planilhas.findIndex((item) => item.resposta === resp);
-              conhecimento_planilhas[index].qtde += 1;
+              conhecimento_planilhas[index].quantidade += 1;
             }
           }
           resp = row["24 - Qual o seu conhecimento em relações aos aplicativos a seguir?   [Apresentadores (PowerPoint, Impress, Prezzi, etc.)]"];
@@ -904,10 +909,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              conhecimento_apresentadores.push({ resposta: resp, qtde: 1 });
+              conhecimento_apresentadores.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = conhecimento_apresentadores.findIndex((item) => item.resposta === resp);
-              conhecimento_apresentadores[index].qtde += 1;
+              conhecimento_apresentadores[index].quantidade += 1;
             }
           }
           resp = row["24 - Qual o seu conhecimento em relações aos aplicativos a seguir?   [Sistemas de Gestão Empresarial]"];
@@ -916,10 +921,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              conhecimento_gestao.push({ resposta: resp, qtde: 1 });
+              conhecimento_gestao.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = conhecimento_gestao.findIndex((item) => item.resposta === resp);
-              conhecimento_gestao[index].qtde += 1;
+              conhecimento_gestao[index].quantidade += 1;
             }
           }
           resp = row["25 -  Agora, considere seu conhecimento sobre idioma: [Inglês]"];
@@ -928,10 +933,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              idioma_ingles.push({ resposta: resp, qtde: 1 });
+              idioma_ingles.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = idioma_ingles.findIndex((item) => item.resposta === resp);
-              idioma_ingles[index].qtde += 1;
+              idioma_ingles[index].quantidade += 1;
             }
           }
           resp = row["25 -  Agora, considere seu conhecimento sobre idioma: [Espanhol]"];
@@ -940,10 +945,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              idioma_espanhol.push({ resposta: resp, qtde: 1 });
+              idioma_espanhol.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = idioma_espanhol.findIndex((item) => item.resposta === resp);
-              idioma_espanhol[index].qtde += 1;
+              idioma_espanhol[index].quantidade += 1;
             }
           }
           resp = row["25 -  Agora, considere seu conhecimento sobre idioma: [Outros idiomas]"];
@@ -952,10 +957,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              idioma_outros.push({ resposta: resp, qtde: 1 });
+              idioma_outros.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = idioma_outros.findIndex((item) => item.resposta === resp);
-              idioma_outros[index].qtde += 1;
+              idioma_outros[index].quantidade += 1;
             }
           }
           resp = row["26 - Considere a busca por informações nos seguintes meios de comunicação: [TV]"];
@@ -964,10 +969,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              info_tv.push({ resposta: resp, qtde: 1 });
+              info_tv.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = info_tv.findIndex((item) => item.resposta === resp);
-              info_tv[index].qtde += 1;
+              info_tv[index].quantidade += 1;
             }
           }
           resp = row["26 - Considere a busca por informações nos seguintes meios de comunicação: [Internet]"];
@@ -976,10 +981,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              info_internet.push({ resposta: resp, qtde: 1 });
+              info_internet.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = info_internet.findIndex((item) => item.resposta === resp);
-              info_internet[index].qtde += 1;
+              info_internet[index].quantidade += 1;
             }
           }
           resp = row["26 - Considere a busca por informações nos seguintes meios de comunicação: [Revista]"];
@@ -988,10 +993,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              info_revista.push({ resposta: resp, qtde: 1 });
+              info_revista.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = info_revista.findIndex((item) => item.resposta === resp);
-              info_revista[index].qtde += 1;
+              info_revista[index].quantidade += 1;
             }
           }
           resp = row["26 - Considere a busca por informações nos seguintes meios de comunicação: [Rádio]"];
@@ -1000,10 +1005,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              info_radio.push({ resposta: resp, qtde: 1 });
+              info_radio.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = info_radio.findIndex((item) => item.resposta === resp);
-              info_radio[index].qtde += 1;
+              info_radio[index].quantidade += 1;
             }
           }
           resp = row["26 - Considere a busca por informações nos seguintes meios de comunicação: [Redes sociais]"];
@@ -1012,10 +1017,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              info_rede_social.push({ resposta: resp, qtde: 1 });
+              info_rede_social.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = info_rede_social.findIndex((item) => item.resposta === resp);
-              info_rede_social[index].qtde += 1;
+              info_rede_social[index].quantidade += 1;
             }
           }
           resp = row["26 - Considere a busca por informações nos seguintes meios de comunicação: [Conversa com amigos]"];
@@ -1024,10 +1029,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              info_amigos.push({ resposta: resp, qtde: 1 });
+              info_amigos.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = info_amigos.findIndex((item) => item.resposta === resp);
-              info_amigos[index].qtde += 1;
+              info_amigos[index].quantidade += 1;
             }
           }
           resp = row["27 -  Com qual frequência você lê jornais?"];
@@ -1036,10 +1041,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              jornal.push({ resposta: resp, qtde: 1 });
+              jornal.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = jornal.findIndex((item) => item.resposta === resp);
-              jornal[index].qtde += 1;
+              jornal[index].quantidade += 1;
             }
           }
 
@@ -1051,10 +1056,10 @@
             });
             if (typeof resp !== "undefined") {
               if (!found) {
-                jornal_assunto.push({ resposta: resposta, qtde: 1 });
+                jornal_assunto.push({ resposta: resposta, quantidade: 1 });
               } else {
                 const index = jornal_assunto.findIndex((item) => item.resposta === resposta);
-                jornal_assunto[index].qtde += 1;
+                jornal_assunto[index].quantidade += 1;
               }
             }
           });
@@ -1065,10 +1070,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_livro.push({ resposta: resp, qtde: 1 });
+              qtde_livro.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = qtde_livro.findIndex((item) => item.resposta === resp);
-              qtde_livro[index].qtde += 1;
+              qtde_livro[index].quantidade += 1;
             }
           }
           resp = row["30 - Se você lê livros literários, qual gênero preferido?"];
@@ -1077,10 +1082,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              livro_genero.push({ resposta: resp, qtde: 1 });
+              livro_genero.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = livro_genero.findIndex((item) => item.resposta === resp);
-              livro_genero[index].qtde += 1;
+              livro_genero[index].quantidade += 1;
             }
           }
           resp = row["31 - Você dedica parte do seu tempo para atividades voluntárias?"];
@@ -1089,10 +1094,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              atividade_voluntaria.push({ resposta: resp, qtde: 1 });
+              atividade_voluntaria.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = atividade_voluntaria.findIndex((item) => item.resposta === resp);
-              atividade_voluntaria[index].qtde += 1;
+              atividade_voluntaria[index].quantidade += 1;
             }
           }
           resp = row["32 - Qual religião você professa?"];
@@ -1101,10 +1106,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              religiao.push({ resposta: resp, qtde: 1 });
+              religiao.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = religiao.findIndex((item) => item.resposta === resp);
-              religiao[index].qtde += 1;
+              religiao[index].quantidade += 1;
             }
           }
 
@@ -1116,10 +1121,10 @@
             });
             if (typeof resp !== "undefined") {
               if (!found) {
-                entreterimento.push({ resposta: resposta, qtde: 1 });
+                entreterimento.push({ resposta: resposta, quantidade: 1 });
               } else {
                 const index = entreterimento.findIndex((item) => item.resposta === resposta);
-                entreterimento[index].qtde += 1;
+                entreterimento[index].quantidade += 1;
               }
             }
           });
@@ -1130,10 +1135,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              fatec.push({ resposta: resp, qtde: 1 });
+              fatec.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = fatec.findIndex((item) => item.resposta === resp);
-              fatec[index].qtde += 1;
+              fatec[index].quantidade += 1;
             }
           }
           resp = row["35 - Porque você escolheu este curso?"];
@@ -1142,10 +1147,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              motivo_curso.push({ resposta: resp, qtde: 1 });
+              motivo_curso.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = motivo_curso.findIndex((item) => item.resposta === resp);
-              motivo_curso[index].qtde += 1;
+              motivo_curso[index].quantidade += 1;
             }
           }
           resp = row["36 - Qual sua maior expectativa quanto ao curso?"];
@@ -1154,10 +1159,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              expectativa_curso.push({ resposta: resp, qtde: 1 });
+              expectativa_curso.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = expectativa_curso.findIndex((item) => item.resposta === resp);
-              expectativa_curso[index].qtde += 1;
+              expectativa_curso[index].quantidade += 1;
             }
           }
           resp = row["37 - Qual sua expectativa após se formar?"];
@@ -1166,10 +1171,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              apos_formar.push({ resposta: resp, qtde: 1 });
+              apos_formar.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = apos_formar.findIndex((item) => item.resposta === resp);
-              apos_formar[index].qtde += 1;
+              apos_formar[index].quantidade += 1;
             }
           }
           resp = row["38 - Você já estudou nesta instituição?"];
@@ -1178,10 +1183,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              ja_estudou.push({ resposta: resp, qtde: 1 });
+              ja_estudou.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = ja_estudou.findIndex((item) => item.resposta === resp);
-              ja_estudou[index].qtde += 1;
+              ja_estudou[index].quantidade += 1;
             }
           }
           resp = row["39 - Você fez algum curso técnico?"];
@@ -1190,10 +1195,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              curso_tecnico.push({ resposta: resp, qtde: 1 });
+              curso_tecnico.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = curso_tecnico.findIndex((item) => item.resposta === resp);
-              curso_tecnico[index].qtde += 1;
+              curso_tecnico[index].quantidade += 1;
             }
           }
           resp = row["40 - Qual o meio de transporte você usa para vir à faculdade?"];
@@ -1202,10 +1207,10 @@
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              meio_transporte.push({ resposta: resp, qtde: 1 });
+              meio_transporte.push({ resposta: resp, quantidade: 1 });
             } else {
               const index = meio_transporte.findIndex((item) => item.resposta === resp);
-              meio_transporte[index].qtde += 1;
+              meio_transporte[index].quantidade += 1;
             }
           }
           resp = row["41 - Escreva em algumas linhas sobre sua história e seus sonhos de vida."];
@@ -1241,10 +1246,7 @@
               return -1
             }
           });
-          console.log(qtde_carros);
-
-
-          // qtde_carros.sort((a, b) => a.resposta - b.resposta);
+          
           qtde_pc.sort((a, b) => a.resposta - b.resposta);
           qtde_celular.sort((a, b) => a.resposta - b.resposta);
           document.getElementById('cursos').innerHTML = Papa.unparse(cursos);
@@ -1323,6 +1325,7 @@
           document.getElementById('curso_tecnico').innerHTML = Papa.unparse(curso_tecnico);
           document.getElementById('meio_transporte').innerHTML = Papa.unparse(meio_transporte);
           gerarListaResposta(historia);
+          document.getElementById("botoes").style.display = 'block';
         }
     });
     });
