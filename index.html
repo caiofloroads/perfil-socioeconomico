@@ -401,13 +401,13 @@
           }
           resp = row["10 - Quantos filhos você têm?"];
           var found = qtde_filhos.some((elemento) => {
-            return elemento.resposta === resp;
+            return elemento.resposta === "'" + resp + "'";
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_filhos.push({ resposta: resp, quantidade: 1 });
+              qtde_filhos.push({ resposta: "'" + resp + "'", quantidade: 1 });
             } else {
-              const index = qtde_filhos.findIndex((item) => item.resposta === resp);
+              const index = qtde_filhos.findIndex((item) => item.resposta === "'" + resp + "'");
               qtde_filhos[index].quantidade += 1;
             }
           }
@@ -545,37 +545,37 @@
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Smartphone]"];
           var found = qtde_smartphone.some((elemento) => {
-            return elemento.resposta === resp;
+            return elemento.resposta === "'" + resp + "'";
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_smartphone.push({ resposta: resp, quantidade: 1 });
+              qtde_smartphone.push({ resposta: "'" + resp + "'", quantidade: 1 });
             } else {
-              const index = qtde_smartphone.findIndex((item) => item.resposta === resp);
+              const index = qtde_smartphone.findIndex((item) => item.resposta === "'" + resp + "'");
               qtde_smartphone[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Microcomputador de mesa]"];
           var found = qtde_pc.some((elemento) => {
-            return elemento.resposta === resp;
+            return elemento.resposta === "'" + resp + "'";
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_pc.push({ resposta: resp, quantidade: 1 });
+              qtde_pc.push({ resposta: "'" + resp + "'", quantidade: 1 });
             } else {
-              const index = qtde_pc.findIndex((item) => item.resposta === resp);
+              const index = qtde_pc.findIndex((item) => item.resposta === "'" + resp + "'");
               qtde_pc[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Notebook]"];
           var found = qtde_notebook.some((elemento) => {
-            return elemento.resposta === resp;
+            return elemento.resposta === "'" + resp + "'";
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_notebook.push({ resposta: resp, quantidade: 1 });
+              qtde_notebook.push({ resposta: "'" + resp + "'", quantidade: 1 });
             } else {
-              const index = qtde_notebook.findIndex((item) => item.resposta === resp);
+              const index = qtde_notebook.findIndex((item) => item.resposta === "'" + resp + "'");
               qtde_notebook[index].quantidade += 1;
             }
           }
@@ -1219,6 +1219,15 @@
           }
       },
         complete: function () {
+          
+          qtde_filhos.sort((a, b) => {
+            if (a.resposta > b.resposta) {
+              return 1
+            }
+            else {
+              return -1
+            }
+          });
           qtde_itens_dvd.sort((a, b) => a.resposta - b.resposta);
           qtde_itens_tv.sort((a, b) => {
             if (a.resposta > b.resposta) {
@@ -1246,9 +1255,28 @@
               return -1
             }
           });
+          qtde_smartphone.sort((a, b) => {
+            if (a.resposta > b.resposta) {
+              return 1
+            }
+            else {
+              return -1
+            }
+          });
+          qtde_notebook.sort((a, b) => {
+            if (a.resposta > b.resposta) {
+              return 1
+            }
+            else {
+              return -1
+            }
+          });
           
+          qtde_filhos.sort((a, b) => a.resposta - b.resposta);
           qtde_pc.sort((a, b) => a.resposta - b.resposta);
           qtde_celular.sort((a, b) => a.resposta - b.resposta);
+          qtde_smartphone.sort((a, b) => a.resposta - b.resposta);
+          qtde_notebook.sort((a, b) => a.resposta - b.resposta);
           document.getElementById('cursos').innerHTML = Papa.unparse(cursos);
           document.getElementById('generos').innerHTML = Papa.unparse(generos);
           document.getElementById('cidades').innerHTML = Papa.unparse(cidades);
