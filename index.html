@@ -10,6 +10,8 @@
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
   <script src="https://unpkg.com/papaparse@latest/papaparse.min.js"></script>
 
+  <center><h2>ANÁLISE RESPOSTAS DO QUESTIONÁRIO</h2></center>
+
   <input type="file" name="teste" id="upload-csv">
   <button id="btn-upload-csv">Carregar dados do Questionário</button>
   <hr>
@@ -19,7 +21,7 @@
   <button onclick="gerarGrafico('estados');">4 - Qual o estado do Brasil em que você nasceu?</button>
   <button onclick="gerarGrafico('cidades');">5 - Qual a sua cidade de residência?</button>
   <button onclick="gerarGrafico('generos');">6 - Qual o seu gênero?</button>
-  <button onclick="gerarGrafico('idades');">7 - Qual a sua data de nascimento?</button>
+  <button onclick="gerarGrafico('idades');">7 - Qual a sua data de nascimento? (IDADE)</button>
   <button onclick="gerarGrafico('estado_civil')">8 - Qual é o seu estado civil?</button>
   <button onclick="gerarGrafico('necessidade_especial')">9 - Você é portador de alguma necessidade especial?</button>
   <button onclick="gerarGrafico('qtde_filhos')">10 - Quantos filhos você têm?</button>
@@ -388,26 +390,29 @@
             }
           }
           resp = row["9 - Você é portador de alguma necessidade especial?"];
-          var found = necessidade_especial.some((elemento) => {
+          respostas = resp.split(';');
+          respostas.forEach((resposta) => {
+            var found = necessidade_especial.some((elemento) => {
+              return elemento.resposta === resposta;
+            });
+            if (typeof resp !== "undefined") {
+              if (!found) {
+                necessidade_especial.push({ resposta: resposta, quantidade: 1 });
+              } else {
+                const index = necessidade_especial.findIndex((item) => item.resposta === resposta);
+                necessidade_especial[index].quantidade += 1;
+              }
+            }
+          });
+          resp = row["10 - Quantos filhos você têm?"];
+          var found = qtde_filhos.some((elemento) => {
             return elemento.resposta === resp;
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              necessidade_especial.push({ resposta: resp, quantidade: 1 });
+              qtde_filhos.push({ resposta: resp, quantidade: 1 });
             } else {
-              const index = necessidade_especial.findIndex((item) => item.resposta === resp);
-              necessidade_especial[index].quantidade += 1;
-            }
-          }
-          resp = row["10 - Quantos filhos você têm?"];
-          var found = qtde_filhos.some((elemento) => {
-            return elemento.resposta === "'" + resp + "'";
-          });
-          if (typeof resp !== "undefined") {
-            if (!found) {
-              qtde_filhos.push({ resposta: "'" + resp + "'", quantidade: 1 });
-            } else {
-              const index = qtde_filhos.findIndex((item) => item.resposta === "'" + resp + "'");
+              const index = qtde_filhos.findIndex((item) => item.resposta === resp);
               qtde_filhos[index].quantidade += 1;
             }
           }
@@ -473,13 +478,13 @@
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Televisores]"];
           var found = qtde_itens_tv.some((elemento) => {
-            return elemento.resposta === "'" + resp + "'";
+            return elemento.resposta === resp;
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_itens_tv.push({ resposta: "'" + resp + "'", quantidade: 1 });
+              qtde_itens_tv.push({ resposta: resp, quantidade: 1 });
             } else {
-              const index = qtde_itens_tv.findIndex((item) => item.resposta ===  "'" + resp + "'");
+              const index = qtde_itens_tv.findIndex((item) => item.resposta ===  resp);
               qtde_itens_tv[index].quantidade += 1;
             }
           }
@@ -509,13 +514,13 @@
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Automóveis]"];
           var found = qtde_carros.some((elemento) => {
-            return elemento.resposta === "'" + resp + "'";
+            return elemento.resposta === resp;
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_carros.push({ resposta: "'" + resp + "'", quantidade: 1 });
+              qtde_carros.push({ resposta: resp, quantidade: 1 });
             } else {
-              const index = qtde_carros.findIndex((item) => item.resposta === "'" + resp + "'");
+              const index = qtde_carros.findIndex((item) => item.resposta === resp);
               qtde_carros[index].quantidade += 1;
             }
           }
@@ -545,37 +550,37 @@
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Smartphone]"];
           var found = qtde_smartphone.some((elemento) => {
-            return elemento.resposta === "'" + resp + "'";
+            return elemento.resposta === resp;
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_smartphone.push({ resposta: "'" + resp + "'", quantidade: 1 });
+              qtde_smartphone.push({ resposta: resp, quantidade: 1 });
             } else {
-              const index = qtde_smartphone.findIndex((item) => item.resposta === "'" + resp + "'");
+              const index = qtde_smartphone.findIndex((item) => item.resposta === resp);
               qtde_smartphone[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Microcomputador de mesa]"];
           var found = qtde_pc.some((elemento) => {
-            return elemento.resposta === "'" + resp + "'";
+            return elemento.resposta === resp;
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_pc.push({ resposta: "'" + resp + "'", quantidade: 1 });
+              qtde_pc.push({ resposta: resp, quantidade: 1 });
             } else {
-              const index = qtde_pc.findIndex((item) => item.resposta === "'" + resp + "'");
+              const index = qtde_pc.findIndex((item) => item.resposta === resp);
               qtde_pc[index].quantidade += 1;
             }
           }
           resp = row["16 - Quantos de cada um dos itens abaixo há em seu domicílio? [Notebook]"];
           var found = qtde_notebook.some((elemento) => {
-            return elemento.resposta === "'" + resp + "'";
+            return elemento.resposta === resp;
           });
           if (typeof resp !== "undefined") {
             if (!found) {
-              qtde_notebook.push({ resposta: "'" + resp + "'", quantidade: 1 });
+              qtde_notebook.push({ resposta: resp, quantidade: 1 });
             } else {
-              const index = qtde_notebook.findIndex((item) => item.resposta === "'" + resp + "'");
+              const index = qtde_notebook.findIndex((item) => item.resposta === resp);
               qtde_notebook[index].quantidade += 1;
             }
           }
@@ -1272,6 +1277,7 @@
             }
           });
           
+          idades.sort((a, b) => a.resposta - b.resposta);
           qtde_filhos.sort((a, b) => a.resposta - b.resposta);
           qtde_pc.sort((a, b) => a.resposta - b.resposta);
           qtde_celular.sort((a, b) => a.resposta - b.resposta);
@@ -1372,6 +1378,17 @@
         data: {
           csv: document.getElementById(tipo).innerHTML
         },
+
+        yAxis: {
+            title: {
+                text: 'Valores'
+            }
+        },
+
+         xAxis: { 
+           type: 'category',
+         },
+
 
         plotOptions: {
           column: {
