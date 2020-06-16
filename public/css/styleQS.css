@@ -1,0 +1,96 @@
+div#rowTitle{
+    margin-top: 180px;
+    text-align: center;
+}
+h2#title{
+    font-family: 'Acme', sans-serif;
+    color: red;
+    font-size: 60px;
+    text-shadow: 2px 2px 4px black;
+}
+
+div#rowHW{
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+div#importAQV{
+    background-color: red;
+    color: white;
+    font-family: 'Acme', sans-serif;
+    font-size: 30px;
+    text-align: center;
+}
+div#importAQV:hover{
+    margin-top: -5px;
+    transition: .4s;
+}
+div#loadDD{
+    background-color: white;
+    border: 2px solid red;
+    color: red;
+    font-family: 'Acme', sans-serif;
+    font-size: 30px;
+    text-align: center;
+}
+div#loadDD:hover{
+    margin-top: -5px;
+    transition: .4s;
+}
+div#clickQST{
+    background-color: red;
+    color: white;
+    font-family: 'Acme', sans-serif;
+    font-size: 30px;
+    text-align: center;
+}
+div#clickQST:hover{
+    margin-top: -5px;
+    transition: .4s;
+}
+div#analOSR{
+    background-color: white;
+    border: 2px solid red;
+    color: red;
+    font-family: 'Acme', sans-serif;
+    font-size: 30px;
+    text-align: center;
+}
+div#analOSR:hover{
+    margin-top: -5px;
+    transition: .4s;
+}
+
+button#btn-upload-csv{
+    color: red;
+    border: 2px solid;
+    font-family: 'Acme', sans-serif;
+    font-size: 22px;
+    box-shadow: 0px 4px 10px black;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+button#btn-upload-csv:hover{
+    background-color: red;
+    color: white;
+}
+
+button.buttomQuestions{
+    border: 2px solid red;
+    font-family: 'Acme', sans-serif;
+    font-size: 18px;
+    margin: 8px;
+    box-shadow: 1px 1px 8px black;
+}
+button.buttomQuestions:hover{
+    background-color: red;
+    color: white;
+}
+button.buttomQuestions:active{
+    margin-top: -6px;
+}
+
+ul#listaRespostas{
+    font-family: 'Acme', sans-serif;
+    font-size: 22px;
+    margin-top: 40px;
+}
